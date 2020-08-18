@@ -1,0 +1,13 @@
+c:\Users\ilya\Repositories\cs-course\lessons\1\HomeWork\ConsoleApp1\ConsoleApp1\bin\Debug\netcoreapp3.1\ConsoleApp1.exe
+c:\Users\ilya\Repositories\cs-course\lessons\1\HomeWork\ConsoleApp1\ConsoleApp1\bin\Debug\netcoreapp3.1\ConsoleApp1.deps.json
+c:\Users\ilya\Repositories\cs-course\lessons\1\HomeWork\ConsoleApp1\ConsoleApp1\bin\Debug\netcoreapp3.1\ConsoleApp1.runtimeconfig.json
+c:\Users\ilya\Repositories\cs-course\lessons\1\HomeWork\ConsoleApp1\ConsoleApp1\bin\Debug\netcoreapp3.1\ConsoleApp1.runtimeconfig.dev.json
+c:\Users\ilya\Repositories\cs-course\lessons\1\HomeWork\ConsoleApp1\ConsoleApp1\bin\Debug\netcoreapp3.1\ConsoleApp1.dll
+c:\Users\ilya\Repositories\cs-course\lessons\1\HomeWork\ConsoleApp1\ConsoleApp1\bin\Debug\netcoreapp3.1\ConsoleApp1.pdb
+c:\Users\ilya\Repositories\cs-course\lessons\1\HomeWork\ConsoleApp1\ConsoleApp1\obj\Debug\netcoreapp3.1\ConsoleApp1.csprojAssemblyReference.cache
+c:\Users\ilya\Repositories\cs-course\lessons\1\HomeWork\ConsoleApp1\ConsoleApp1\obj\Debug\netcoreapp3.1\ConsoleApp1.AssemblyInfoInputs.cache
+c:\Users\ilya\Repositories\cs-course\lessons\1\HomeWork\ConsoleApp1\ConsoleApp1\obj\Debug\netcoreapp3.1\ConsoleApp1.AssemblyInfo.cs
+c:\Users\ilya\Repositories\cs-course\lessons\1\HomeWork\ConsoleApp1\ConsoleApp1\obj\Debug\netcoreapp3.1\ConsoleApp1.csproj.CoreCompileInputs.cache
+c:\Users\ilya\Repositories\cs-course\lessons\1\HomeWork\ConsoleApp1\ConsoleApp1\obj\Debug\netcoreapp3.1\ConsoleApp1.dll
+c:\Users\ilya\Repositories\cs-course\lessons\1\HomeWork\ConsoleApp1\ConsoleApp1\obj\Debug\netcoreapp3.1\ConsoleApp1.pdb
+c:\Users\ilya\Repositories\cs-course\lessons\1\HomeWork\ConsoleApp1\ConsoleApp1\obj\Debug\netcoreapp3.1\ConsoleApp1.genruntimeconfig.cache
