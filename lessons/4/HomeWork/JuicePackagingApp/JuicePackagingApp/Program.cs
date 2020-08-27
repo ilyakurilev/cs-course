@@ -3,14 +3,14 @@
 namespace JuicePackagingApp
 {
 
-    [Flags]
+    //[Flags]
     enum Bottle
-    {
-        None = 0,   
-        OneLiter = 0x1,
-        FiveLiters = 0x2,
-        TwentyLiters = 0x4
+    {  
+        OneLiter = 1,
+        FiveLiters = 5,
+        TwentyLiters = 20,
     }
+
 
     class Program
     {
@@ -18,43 +18,44 @@ namespace JuicePackagingApp
         {
 
             Console.WriteLine("How much juice (in liters) you need to pack?");
-            Console.Write(">");
+            Console.Write("> ");
             double litersOfJuice = Double.Parse(Console.ReadLine(), System.Globalization.CultureInfo.InvariantCulture);
 
-            Bottle bottles = Bottle.None;
+            int bottlesFlags = 0;
+            Bottle[] bottles = (Bottle[])Enum.GetValues(typeof(Bottle));
+            
+            //each elemet of the array corresponds to the number of containers of a sertain size from enum Bottle
+            //from larger volume to smaller
+            int[] numberOfBottles = new int[bottles.Length];
 
-            int twentyLiters = (int)(litersOfJuice / 20);
-            if (twentyLiters > 0)
+            for (int i = bottles.Length - 1; i >= 0; i--)
             {
-                bottles |= Bottle.TwentyLiters;
-                litersOfJuice %= 20;
-            }
-
-            int fiweLiters = (int)(litersOfJuice / 5);
-            if (fiweLiters > 0)
-            {
-                bottles |= Bottle.FiveLiters;
-                litersOfJuice %= 5;
-            }
-
-            int oneLiters = (int)Math.Round(litersOfJuice, MidpointRounding.ToPositiveInfinity);
-            if (oneLiters > 0)
-            {
-                bottles |= Bottle.OneLiter;
+                if (i == 0)
+                {
+                    numberOfBottles[bottles.Length - i - 1] = (int)Math.Round(litersOfJuice / (int)bottles[i], MidpointRounding.ToPositiveInfinity);
+                    if (numberOfBottles[bottles.Length - i - 1] > 0)
+                    {
+                        bottlesFlags |= 1 << i;
+                    }
+                }
+                else
+                {
+                    numberOfBottles[bottles.Length - i - 1] = (int)litersOfJuice / (int)bottles[i];
+                    if (numberOfBottles[bottles.Length - i - 1] > 0)
+                    {
+                        bottlesFlags |= 1 << i;
+                        litersOfJuice %= (int)bottles[i];
+                    }
+                }
             }
 
             Console.WriteLine("You need the following containers:");
-            if ((bottles & Bottle.TwentyLiters) == Bottle.TwentyLiters)
+            for (int i = 0; i < bottles.Length; i++)
             {
-                Console.WriteLine("20 l: {0}pcs.", twentyLiters);
-            }
-            if ((bottles & Bottle.FiveLiters) == Bottle.FiveLiters)
-            {
-                Console.WriteLine("5 l: {0}pcs.", fiweLiters);
-            }
-            if ((bottles & Bottle.OneLiter) == Bottle.OneLiter)
-            {
-                Console.WriteLine("1 l: {0}pcs.", oneLiters);
+                if ((bottlesFlags & 1 << bottles.Length - i - 1) == 1 << bottles.Length - i - 1)
+                {
+                    Console.WriteLine("{0,4:d} l: {1}pcs.", bottles[bottles.Length - 1 - i], numberOfBottles[i]);
+                }
             }
 
         }
