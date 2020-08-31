@@ -6,65 +6,12 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            /*Console.Write("Enter the age from 1 to 100: ");
-            int age = System.Int32.Parse(Console.ReadLine());
-           
-            
-            if (age > 200)
-            {
-                throw new Exception("Number is greather than 200!");         
-            }
+            char[] availableOperations = { '+', '-', '*', '/' };
 
+            double firstNumber = ReadNumber("Enter the first number: ");
+            double secondNumber = ReadNumber("Enter the second number: ");
+            char operation = ReadOperation("Enter the operation: ", availableOperations);
 
-
-            if (age < 1 || age > 100)
-            {
-                Console.WriteLine("Error input!");
-            }
-            if (age % 10 == 1 && age / 10 != 1)
-            {
-                Console.WriteLine("{0} год", age);
-            }
-            else if ((age % 10 <= 4) && age / 10 != 1)
-            {
-                Console.WriteLine("{0} года", age);
-            }
-            else
-            {
-                Console.WriteLine("{0} лет", age);
-            }*/
-            double firstNumber;
-            double secondNumber;
-            char operation;
-
-            while (true) {
-                try
-                {
-                    Console.Write("Enter the first number: ");
-                    firstNumber = System.Double.Parse(Console.ReadLine(), System.Globalization.CultureInfo.InvariantCulture);
-                    Console.Write("Enter the second number: ");
-                    secondNumber = System.Double.Parse(Console.ReadLine(), System.Globalization.CultureInfo.InvariantCulture);
-                    Console.Write("Enter the operation (+, -, * /): ");
-                    operation = System.Char.Parse(Console.ReadLine());
-                    break;
-                }
-                catch (ArgumentNullException)
-                {
-                    Console.WriteLine("Incorrect input, try again");
-                }
-                catch (FormatException ex)
-                {
-                    Console.WriteLine("Incorrect input, try again");
-                }
-                catch (DivideByZeroException)
-                {
-                    Console.WriteLine("Incorrect input, try again");
-                }
-                catch
-                {
-                    Console.WriteLine("Incorrect input, try again");
-                }
-            }
 
             double? result = operation switch
             {
@@ -84,6 +31,43 @@ namespace ConsoleApp1
                 Console.WriteLine("Incorrect operation : {0}", operation);
             }
 
+        }
+
+        static double ReadNumber(string prompt)
+        {
+            for (; ; )
+            {
+                Console.Write(prompt);
+                bool isParse = double.TryParse(Console.ReadLine(), out double number);
+                if (isParse)
+                {
+                    return number;
+                }
+                else
+                {
+                    Console.WriteLine("Incorrect input, try again.");
+                }
+            }
+        }
+
+        static char ReadOperation(string prompt, char[] availableOperations)
+        {
+            for (; ; )
+            {
+                Console.Write(prompt);
+                bool isParse = char.TryParse(Console.ReadLine(), out char operation);
+                if (isParse)
+                {
+                    for (int i = 0; i < availableOperations.Length; i++)
+                    {
+                        if (operation == availableOperations[i])
+                        {
+                            return operation;
+                        }
+                    }
+                    Console.WriteLine("Incorrect operation, try again.");
+                }
+            }
         }
     }
 }
