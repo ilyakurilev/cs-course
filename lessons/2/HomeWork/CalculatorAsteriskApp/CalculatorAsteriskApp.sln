@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30309.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculatorAsteriskApp", "CalculatorAsteriskApp\CalculatorAsteriskApp.csproj", "{1B1F0449-98E4-45F5-B836-E599CC49B2AF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1B1F0449-98E4-45F5-B836-E599CC49B2AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B1F0449-98E4-45F5-B836-E599CC49B2AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B1F0449-98E4-45F5-B836-E599CC49B2AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B1F0449-98E4-45F5-B836-E599CC49B2AF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BC16C939-C9DD-4E9D-9156-8FC68909A547}
+	EndGlobalSection
+EndGlobal
