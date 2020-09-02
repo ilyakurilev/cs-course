@@ -19,6 +19,7 @@ namespace ConsoleApp
                 }
 
                 Console.WriteLine("\n***************************\n");
+
                 foreach (var a in array)
                 {
                     Console.WriteLine(a);
