@@ -10,20 +10,25 @@ namespace ConsoleApp1
             string[] words;
             while (true)
             {
-                try
+
+                Console.Write("> ");
+                var line = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(line))
                 {
-                    Console.Write("> ");
-                    words = Console.ReadLine().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    Console.WriteLine("Вы ввели пустую строку, попробуйте ещё раз:");
+                }
+                else
+                {
+                    words = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
                     if (words.Length < 2)
                     {
                         Console.WriteLine("Слишком мало слов, попробуйте ещё раз:");
-                        continue;
                     }
-                    break;
-                }
-                catch (NullReferenceException)
-                {
-                    Console.WriteLine("Вы ввели null строку, попробуйте ещё раз:");
+                    else
+                    {
+                        break;
+                    }
                 }
             }
 

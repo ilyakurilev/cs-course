@@ -11,22 +11,19 @@ namespace ConsoleApp2
             string line;
             while (true)
             {
-                try
+
+                Console.Write("> ");
+                line = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(line))
                 {
-                    Console.Write("> ");
-                    line = Console.ReadLine();
-                    if (line.Trim() == "")
-                    {
-                        Console.WriteLine("Вы ввели пустую строку, попробуйте ещё раз: ");
-                        continue;
-                    }
+                    Console.WriteLine("Вы ввели пустую строку, попробуйте ещё раз:");
+                }
+                else
+                {
                     break;
                 }
-                catch (NullReferenceException)
-                {
-                    Console.WriteLine("Вы ввели null строку, попробуйте ещё раз:");
-                }
             }
+
 
             var sb = new StringBuilder();
             for (int i = line.Length - 1; i >= 0; i--)
