@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ConsoleApp1
 {
@@ -28,6 +29,12 @@ namespace ConsoleApp1
 
         public static bool ValidateBarackets(string text)
         {
+
+            if (text == null)
+            {
+                return false;
+            }
+
             Stack<char> brackets = new Stack<char>();
             bool isCorrect = true;
             for (var i = 0; i < text.Length && isCorrect; i++)
