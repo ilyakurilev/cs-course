@@ -16,6 +16,7 @@ namespace ConsoleApp1
             var s6 = "[][)";
             var s7 = "[(])";
             var s8 = "(()[]]";
+            var s9 = "]";
 
             Console.WriteLine(ValidateBarackets(s1));
             Console.WriteLine(ValidateBarackets(s2));
@@ -25,46 +26,51 @@ namespace ConsoleApp1
             Console.WriteLine(ValidateBarackets(s6));
             Console.WriteLine(ValidateBarackets(s7));
             Console.WriteLine(ValidateBarackets(s8));
+            Console.WriteLine(ValidateBarackets(s9));
         }
 
         public static bool ValidateBarackets(string text)
         {
-
             if (text == null)
             {
                 return false;
+            }
+
+            var bracketsDictionary = new Dictionary<char, char>
+            {
+                ['('] = ')',
+                ['{'] = '}',
+                ['['] = ']',
+            };
+
+            var reverseBracketsDictionary = new Dictionary<char, char>();
+            foreach (var pair in bracketsDictionary)
+            {
+                reverseBracketsDictionary.Add(pair.Value, pair.Key);
             }
 
             Stack<char> brackets = new Stack<char>();
             bool isCorrect = true;
             for (var i = 0; i < text.Length && isCorrect; i++)
             {
-                switch (text[i])
+                if (bracketsDictionary.ContainsKey(text[i]))
                 {
-                    case '(':
-                    case '{':
-                    case '[':
-                        brackets.Push(text[i]);
-                        break;
-                    case ')':
-                        if (brackets.Pop() != '(')
-                        {
-                            isCorrect = false;
-                        }
-                        break;
-                    case '}':
-                        if (brackets.Pop() != '{')
-                        {
-                            isCorrect = false;
-                        }
-                        break;
-                    case ']':
-                        if (brackets.Pop() != '[')
-                        {
-                            isCorrect = false;
-                        }
-                        break;
+                    brackets.Push(text[i]);
                 }
+                else if (reverseBracketsDictionary.ContainsKey(text[i]))
+                {
+                    if (brackets.TryPop(out var br))
+                    {
+                        if (br != reverseBracketsDictionary[text[i]])
+                        {
+                            isCorrect = false;
+                        }
+                    }
+                    else
+                    {
+                        isCorrect = false;
+                    }
+                }     
             }
 
             return isCorrect && brackets.Count == 0;
