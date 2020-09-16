@@ -60,10 +60,6 @@ namespace ConsoleApp1
                 else if (reverseBracketsDictionary.ContainsKey(text[i]))
                 {
                     isCorrect = brackets.TryPop(out var br) && br == reverseBracketsDictionary[text[i]];
-                    if (!isCorrect)
-                    {
-                        break;
-                    }
                 }     
             }
 
