@@ -64,11 +64,13 @@ namespace ConsoleApp1
                         if (br != reverseBracketsDictionary[text[i]])
                         {
                             isCorrect = false;
+                            break;
                         }
                     }
                     else
                     {
                         isCorrect = false;
+                        break;
                     }
                 }     
             }
