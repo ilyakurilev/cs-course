@@ -1,38 +1,35 @@
 ﻿namespace ConsoleApp1
 {
-    class MultipleLogWriter : AbstractLogWriter
+    class MultipleLogWriter : ILogWriter
     {
         public ILogWriter[] LogWriters { get; private set; }
-
 
         public MultipleLogWriter(params ILogWriter[] logWriters)
         {
             LogWriters = logWriters;
         }
 
-
-        protected override void Write(string message, LogType logType)
+        public void LogInfo(string message)
         {
-            switch (logType)
+            foreach (var writer in LogWriters)
             {
-                case LogType.Info:
-                    foreach (var logWriter in LogWriters)
-                    {
-                        logWriter.LogInfo(message);
-                    }
-                    break;
-                case LogType.Warning:
-                    foreach (var logWriter in LogWriters)
-                    {
-                        logWriter.LogWarning(message);
-                    }
-                    break;
-                case LogType.Error:
-                    foreach (var logWriter in LogWriters)
-                    {
-                        logWriter.LogError(message);
-                    }
-                    break;
+                writer.LogInfo(message);
+            }
+        }
+
+        public void LogWarning(string message)
+        {
+            foreach (var writer in LogWriters)
+            {
+                writer.LogWarning(message);
+            }
+        }
+
+        public void LogError(string message)
+        {
+            foreach (var writer in LogWriters)
+            {
+                writer.LogError(message);
             }
         }
     }

@@ -9,7 +9,6 @@ namespace ConsoleApp1
         public FileLogWriter(string path = "log.txt")
         {
             _fileName = path;
-            File.WriteAllText(_fileName, "");
         }
 
         protected override void Write(string message, LogType logType)
