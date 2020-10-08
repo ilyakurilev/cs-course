@@ -1,4 +1,6 @@
-﻿namespace ConsoleApp1
+﻿using System;
+
+namespace ConsoleApp1
 {
     class MultipleLogWriter : ILogWriter
     {
@@ -6,7 +8,7 @@
 
         public MultipleLogWriter(params ILogWriter[] logWriters)
         {
-            LogWriters = logWriters;
+            LogWriters = logWriters ?? throw new ArgumentNullException($"\"{nameof(logWriters)}\" cannot be null");
         }
 
         public void LogInfo(string message)

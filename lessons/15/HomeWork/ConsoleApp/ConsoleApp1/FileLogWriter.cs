@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace ConsoleApp1
 {
@@ -8,6 +9,10 @@ namespace ConsoleApp1
 
         public FileLogWriter(string path = "log.txt")
         {
+            if (string.IsNullOrEmpty(path))
+            {
+                throw new ArgumentNullException($"\"{nameof(path)}\" cannot be null or empty");
+            }
             _fileName = path;
         }
 
