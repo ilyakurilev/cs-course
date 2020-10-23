@@ -15,15 +15,23 @@ namespace Reminder.Storage.Memory
             _items = new Dictionary<Guid, ReminderItem>();
         }
 
+        public ReminderStorage(params ReminderItem[] items)
+        {
+            _items = items.ToDictionary(item => item.Id);
+        }
+
         public void Add(ReminderItem item)
         {
-            throw new NotImplementedException();
+            if (!_items.TryAdd(item.Id, item))
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public ReminderItem[] Find(DateTimeOffset dateTime)
         {
             return _items.Values.
-                Where(item => item.DateTime <= dateTime).
+                Where(item => item.DateTime <= dateTime && item.Status == ReminderItemStatus.Created).
                 OrderByDescending(item => item.DateTime).
                 ToArray();
         }
@@ -40,7 +48,12 @@ namespace Reminder.Storage.Memory
 
         public void Update(ReminderItem item)
         {
-            throw new NotImplementedException();
+            if (!_items.ContainsKey(item.Id))
+            {
+                throw new NotImplementedException();
+            }
+
+            _items[item.Id] = item;
         }
     }
 }

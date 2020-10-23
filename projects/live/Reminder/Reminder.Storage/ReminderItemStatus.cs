@@ -3,6 +3,7 @@
     public enum ReminderItemStatus
     {
         Created,
+        Ready,
         Sent,
         Failed
     }

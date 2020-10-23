@@ -35,6 +35,26 @@ namespace Reminder.Storage
             ContactId = contactId;
         }
 
+        public void MakeSent()
+        {
+            if (Status != ReminderItemStatus.Ready)
+            {
+                throw new InvalidOperationException($"Reminder should be in {ReminderItemStatus.Ready} status");
+            }
+
+            Status = ReminderItemStatus.Sent;
+        }
+
+        public void MakeReady()
+        {
+            if (Status == ReminderItemStatus.Ready)
+            {
+                throw new InvalidOperationException($"Reminder already in {ReminderItemStatus.Ready} status");
+            }
+
+            Status = ReminderItemStatus.Ready;
+        }
+
         public override string ToString() =>
             $"Reminder (id: {Id}, status: {Status}) at {DateTime:O} to {ContactId}";
 
