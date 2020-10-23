@@ -31,7 +31,7 @@ namespace Reminder.Storage.Memory
         public ReminderItem[] Find(DateTimeOffset dateTime)
         {
             return _items.Values.
-                Where(item => item.DateTime <= dateTime && item.Status == ReminderItemStatus.Ready).
+                Where(item => item.DateTime <= dateTime && item.Status == ReminderItemStatus.Created).
                 OrderByDescending(item => item.DateTime).
                 ToArray();
         }

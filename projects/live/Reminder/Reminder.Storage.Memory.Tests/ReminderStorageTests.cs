@@ -89,9 +89,9 @@ namespace Reminder.Storage.Memory.Tests
         {
             var items = new ReminderItem[]
             {
-                ReminderItem(Guid.NewGuid(), status: ReminderItemStatus.Ready, dateTime: DateTimeOffset.UtcNow.AddMinutes(10)),
-                ReminderItem(Guid.NewGuid(), status: ReminderItemStatus.Ready, dateTime: DateTimeOffset.UtcNow.AddMinutes(10)),
-                ReminderItem(Guid.NewGuid(), status: ReminderItemStatus.Ready, dateTime: DateTimeOffset.UtcNow.AddMinutes(10)),
+                ReminderItem(Guid.NewGuid(), status: ReminderItemStatus.Created, dateTime: DateTimeOffset.UtcNow.AddMinutes(10)),
+                ReminderItem(Guid.NewGuid(), status: ReminderItemStatus.Created, dateTime: DateTimeOffset.UtcNow.AddMinutes(10)),
+                ReminderItem(Guid.NewGuid(), status: ReminderItemStatus.Created, dateTime: DateTimeOffset.UtcNow.AddMinutes(10)),
             };
             var storage = new ReminderStorage();
 
@@ -105,9 +105,9 @@ namespace Reminder.Storage.Memory.Tests
         {
             var items = new ReminderItem[]
             {
-                ReminderItem(Guid.NewGuid(), status: ReminderItemStatus.Ready),
-                ReminderItem(Guid.NewGuid(), status: ReminderItemStatus.Ready),
-                ReminderItem(Guid.NewGuid(), status: ReminderItemStatus.Ready),
+                ReminderItem(Guid.NewGuid(), status: ReminderItemStatus.Created),
+                ReminderItem(Guid.NewGuid(), status: ReminderItemStatus.Created),
+                ReminderItem(Guid.NewGuid(), status: ReminderItemStatus.Created),
             };
             var storage = new ReminderStorage(items);
 
