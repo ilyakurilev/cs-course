@@ -24,7 +24,11 @@ namespace Reminder.Storage.Memory
         {
             if (!_items.TryAdd(item.Id, item))
             {
+<<<<<<< HEAD
                 throw new NotImplementedException();
+=======
+                throw new ReminderItemAlreadyExistException(item.Id);
+>>>>>>> 53f77d99d35bb4b87da0099a1039d0cc66a88d05
             }
         }
 
@@ -50,7 +54,11 @@ namespace Reminder.Storage.Memory
         {
             if (!_items.ContainsKey(item.Id))
             {
+<<<<<<< HEAD
                 throw new NotImplementedException();
+=======
+                throw new ReminderItemNotFoundException(item.Id);
+>>>>>>> 53f77d99d35bb4b87da0099a1039d0cc66a88d05
             }
 
             _items[item.Id] = item;
