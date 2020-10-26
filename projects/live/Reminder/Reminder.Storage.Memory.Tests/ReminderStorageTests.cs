@@ -1,134 +1,143 @@
 ﻿using NuGet.Frameworks;
 using NUnit.Framework;
 using Reminder.Storage.Exceptions;
+using Reminder.Tests;
 using System;
 
 namespace Reminder.Storage.Memory.Tests
 {
     class ReminderStorageTests
     {
-        [Test]
-        public void Get_GivenNotExistingId_ShouldRaiseException()
-        {
-            var storage = new ReminderStorage();
-            var itemId = Guid.NewGuid();
+		[Test]
+		public void Get_GivenNotExistingId_ShouldRaiseException()
+		{
+			var itemId = Guid.NewGuid();
+			var storage = Create.Storage.Build();
+			
 
-            var exception = Assert.Catch<ReminderItemNotFoundException>(() =>
-                storage.Get(itemId));
+			var exception = Assert.Catch<ReminderItemNotFoundException>(() =>
+				storage.Get(itemId)
+			);
+			Assert.AreEqual(itemId, exception.Id);
+		}
 
-            Assert.AreEqual(itemId, exception.Id);
-        }
 
-        [Test]
-        public void Get_GivenExistingItem_ShouldReturnIt()
-        {
-            var item = ReminderItem(Guid.NewGuid());
-            var storage = new ReminderStorage(item);
+		[Test]
+		public void Get_GivenExistingItem_ShouldReturnIt()
+		{
+			// Arrange
+			var itemId = Guid.NewGuid();
+			var item = Create.Reminder.WithId(itemId);
+			var storage = Create.Storage.WithItems(item).Build();
+			
 
-            var result = storage.Get(item.Id);
+			// Act
+			var result = storage.Get(itemId);
 
-            Assert.AreEqual(item.Id, result.Id);
-        }
+			// Assert
+			Assert.AreEqual(itemId, result.Id);
+		}
 
-        [Test]
-        public void Add_GivenNotExistingItem_ShouldAddIt()
-        {
-            var storage = new ReminderStorage();
-            var item = ReminderItem(Guid.NewGuid());
+		[Test]
+		public void Add_GivenNotExistingId_ShouldGetByIdAfterAdd()
+		{
+			// Arrange
+			var itemId = Guid.NewGuid();
+			var item = Create.Reminder.WithId(itemId).Build();
+			var storage = Create.Storage.Build();
 
-            storage.Add(item);
+			// Act
+			storage.Add(item);
+			var result = storage.Get(item.Id);
 
-            var addedItem = storage.Get(item.Id);
+			// Assert
+			Assert.AreEqual(item.Id, result.Id);
+		}
 
-            Assert.AreEqual(item.Id, addedItem.Id);
-        }
+		[Test]
+		public void Add_GivenExistingItem_ShouldRaiseException()
+		{
+			// Arrange
+			var itemId = Guid.NewGuid();
+			var item = Create.Reminder.WithId(itemId).Build();
+			var storage = Create.Storage.WithItems(item).Build();
 
-        [Test]
-        public void Add_GivenExistingItem_ShouldRaiseException()
-        {
-            var itemId = Guid.NewGuid();
-            var item = ReminderItem(itemId);
-            var storage = new ReminderStorage(item);
+			// Act
+			var exception = Assert.Catch<ReminderItemAlreadyExistsException>(() =>
+				storage.Add(item)
+			);
 
-            Assert.Catch<ReminderItemAlreadyExistException>(() =>
-                storage.Add(item));
-        }
+			// Assert
+			Assert.AreEqual(item.Id, exception.Id);
+		}
 
-        [Test]
-        public void Update_GivenExistingItem_ShoutdUpdateIt()
-        {
-            var itemId = Guid.NewGuid();
-            var item = ReminderItem(itemId);
-            var storage = new ReminderStorage(item);
+		[Test]
+		public void Update_GivenNotExistingId_ShouldRaiseException()
+		{
+			var itemId = Guid.NewGuid();
+			var item = Create.Reminder.WithId(itemId).Build();
+			var storage = Create.Storage.Build();
+			
 
-            var updatedItem = ReminderItem(itemId, ReminderItemStatus.Sent, null, "Updated message", "ContactId");
-            storage.Update(updatedItem);
+			var exception = Assert.Catch<ReminderItemNotFoundException>(() =>
+				storage.Update(item)
+			);
+			Assert.AreEqual(item.Id, exception.Id);
+		}
 
-            var result = storage.Get(itemId);
+		[Test]
+		public void Update_GivenExistingItem_ShouldReturnUpdatedValues()
+		{
+			var itemId = Guid.NewGuid();
+			var item = Create.Reminder.
+				WithId(itemId).
+				WithMessage("Initial message").
+				WithContact("Initial contact").
+				Build();
+			var storage = Create.Storage.WithItems(item).Build();
+			var updatedItem = Create.Reminder.
+				WithId(itemId).
+				WithMessage("Updated message").
+				WithContact("Updated contact").
+				Build();
 
-            Assert.AreEqual(item.Id, result.Id);
-            Assert.AreNotEqual(item.Status, result.Status);
-            Assert.AreNotEqual(item.DateTime, result.DateTime);
-            Assert.AreNotEqual(item.Message, result.Message);
-        }
-        
-        [Test]
-        public void Update_GivenNotExistingItem_ShouldRaiseException()
-        {
-            var itemId = Guid.NewGuid();
-            var item = ReminderItem(itemId);
-            var storage = new ReminderStorage();
-            
 
-            Assert.Catch<ReminderItemNotFoundException>(() =>
-                storage.Update(item));
-        }
+			storage.Update(updatedItem);
+			var result = storage.Get(item.Id);
 
-        [Test]
-        public void Find_GivenRemindersInFuture_ShouldReturnEmptyCollecton()
-        {
-            var items = new ReminderItem[]
-            {
-                ReminderItem(Guid.NewGuid(), status: ReminderItemStatus.Created, dateTime: DateTimeOffset.UtcNow.AddMinutes(10)),
-                ReminderItem(Guid.NewGuid(), status: ReminderItemStatus.Created, dateTime: DateTimeOffset.UtcNow.AddMinutes(10)),
-                ReminderItem(Guid.NewGuid(), status: ReminderItemStatus.Created, dateTime: DateTimeOffset.UtcNow.AddMinutes(10)),
-            };
-            var storage = new ReminderStorage();
 
-            var result = storage.Find(DateTimeOffset.UtcNow);
+			Assert.AreEqual(updatedItem.Message, result.Message);
+			Assert.AreEqual(updatedItem.ContactId, result.ContactId);
+		}
 
-            Assert.IsEmpty(result);
-        }
+		[Test]
+		public void Find_GivenRemindersInFuture_ShouldReturnEmptyCollection()
+		{
+			var datetime = DateTimeOffset.UtcNow;
+			var storage = Create.Storage.
+				WithItems(
+				Create.Reminder.InFuture(),
+				Create.Reminder.InFuture()).
+				Build();
 
-        [Test]
-        public void Find_GivenRemindersInPast_ShouldReturnNotEmptyCollection()
-        {
-            var items = new ReminderItem[]
-            {
-                ReminderItem(Guid.NewGuid(), status: ReminderItemStatus.Created, dateTime: DateTimeOffset.UtcNow.AddSeconds(-1)),
-                ReminderItem(Guid.NewGuid(), status: ReminderItemStatus.Created, dateTime: DateTimeOffset.UtcNow.AddSeconds(-1)),
-                ReminderItem(Guid.NewGuid(), status: ReminderItemStatus.Created, dateTime: DateTimeOffset.UtcNow.AddSeconds(-1)),
-            };
-            var storage = new ReminderStorage(items);
+			var result = storage.Find(datetime);
 
-            var result = storage.Find(DateTimeOffset.UtcNow);
+			CollectionAssert.IsEmpty(result);
+		}
 
-            Assert.IsNotEmpty(result);
-        }
-        
+		[Test]
+		public void Find_GivenRemindersInPastOrEqual_ShouldReturnNotEmptyCollection()
+		{
+			var datetime = DateTimeOffset.UtcNow;
+			var storage = Create.Storage.
+				WithItems(
+				Create.Reminder.InPast(),
+				Create.Reminder.InPast()).
+				Build();
 
-        public ReminderItem ReminderItem(Guid id,
-            ReminderItemStatus status = ReminderItemStatus.Created,
-            DateTimeOffset? dateTime = default,
-            string message = "Message",
-            string contactId = "ContactId")
-        {
-            return new ReminderItem(id,
-                status, 
-                dateTime ?? DateTimeOffset.UtcNow, 
-                message,
-                contactId);
-        }
+			var result = storage.Find(datetime);
 
-    }
+			CollectionAssert.IsNotEmpty(result);
+		}
+	}
 }

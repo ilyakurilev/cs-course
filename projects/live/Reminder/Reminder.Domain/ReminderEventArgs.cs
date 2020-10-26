@@ -1,12 +1,13 @@
 ﻿using Reminder.Storage;
+using System;
 
 namespace Reminder.Domain
 {
-    public class ReminderSentEventArgs
+    public class ReminderEventArgs : EventArgs
     {
         public ReminderItemInfo Reminder { get; }
 
-        public ReminderSentEventArgs(ReminderItem reminder)
+        public ReminderEventArgs(ReminderItem reminder)
         {
             Reminder = new ReminderItemInfo(reminder);
         }
