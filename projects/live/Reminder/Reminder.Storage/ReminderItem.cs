@@ -35,24 +35,24 @@ namespace Reminder.Storage
             ContactId = contactId;
         }
 
-        public void MakeSent()
+        public void MarkSent() =>
+            MoveToState(ReminderItemStatus.Ready, ReminderItemStatus.Sent);
+
+        public void MarkFailed() =>
+            MoveToState(ReminderItemStatus.Ready, ReminderItemStatus.Failed);
+
+        public void MarkReady() =>
+            MoveToState(ReminderItemStatus.Created, ReminderItemStatus.Ready);
+
+        private void MoveToState(ReminderItemStatus allowedStatus, ReminderItemStatus targetStatus)
         {
-            if (Status != ReminderItemStatus.Ready)
+            if (Status != allowedStatus)
             {
-                throw new InvalidOperationException($"Reminder should be in {ReminderItemStatus.Ready} status");
+                throw new InvalidOperationException(
+                    $"Reminder should be in {allowedStatus} status");
             }
 
-            Status = ReminderItemStatus.Sent;
-        }
-
-        public void MakeReady()
-        {
-            if (Status == ReminderItemStatus.Ready)
-            {
-                throw new InvalidOperationException($"Reminder already in {ReminderItemStatus.Ready} status");
-            }
-
-            Status = ReminderItemStatus.Ready;
+            Status = targetStatus;
         }
 
         public override string ToString() =>

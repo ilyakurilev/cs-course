@@ -24,7 +24,7 @@ namespace Reminder.Storage.Memory
         {
             if (!_items.TryAdd(item.Id, item))
             {
-                throw new NotImplementedException();
+                throw new ReminderItemAlreadyExistsException(item.Id);
             }
         }
 
@@ -50,7 +50,7 @@ namespace Reminder.Storage.Memory
         {
             if (!_items.ContainsKey(item.Id))
             {
-                throw new NotImplementedException();
+                throw new ReminderItemNotFoundException(item.Id);
             }
 
             _items[item.Id] = item;

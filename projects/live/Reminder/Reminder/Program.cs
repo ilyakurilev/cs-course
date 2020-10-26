@@ -32,10 +32,16 @@ namespace Reminder
                         "Message 3",
                         "ContactId 3"
                         )
-                ));
+                ),
+                null
+            );
 
             scheduler.ReminderSent += OnReminderSent;
-            scheduler.Start(new ReminderSchedulerSettings());
+            scheduler.Start(new ReminderSchedulerSettings
+            {
+                TimerDelay = TimeSpan.Zero,
+                TimerInterval = TimeSpan.FromSeconds(1)
+            });
 
 
             Console.WriteLine("Waiting reminders..");
@@ -43,7 +49,7 @@ namespace Reminder
             Console.ReadKey(true);
         }
 
-        public static void OnReminderSent(object sender, ReminderSentEventArgs args)
+        public static void OnReminderSent(object sender, ReminderEventArgs args)
         {
             Console.WriteLine(
                 $"Reminder ({args.Reminder.Id}) at " +
