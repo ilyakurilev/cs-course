@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using NuGet.Frameworks;
+using NUnit.Framework;
 using Reminder.Storage.Exceptions;
 using Reminder.Tests;
 using System;
@@ -19,6 +20,7 @@ namespace Reminder.Storage.Memory.Tests
 			);
 			Assert.AreEqual(itemId, exception.Id);
 		}
+
 
 		[Test]
 		public void Get_GivenExistingItem_ShouldReturnIt()
