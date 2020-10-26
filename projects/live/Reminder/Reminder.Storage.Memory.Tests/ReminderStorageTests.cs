@@ -105,9 +105,9 @@ namespace Reminder.Storage.Memory.Tests
         {
             var items = new ReminderItem[]
             {
-                ReminderItem(Guid.NewGuid(), status: ReminderItemStatus.Created),
-                ReminderItem(Guid.NewGuid(), status: ReminderItemStatus.Created),
-                ReminderItem(Guid.NewGuid(), status: ReminderItemStatus.Created),
+                ReminderItem(Guid.NewGuid(), status: ReminderItemStatus.Created, dateTime: DateTimeOffset.UtcNow.AddSeconds(-1)),
+                ReminderItem(Guid.NewGuid(), status: ReminderItemStatus.Created, dateTime: DateTimeOffset.UtcNow.AddSeconds(-1)),
+                ReminderItem(Guid.NewGuid(), status: ReminderItemStatus.Created, dateTime: DateTimeOffset.UtcNow.AddSeconds(-1)),
             };
             var storage = new ReminderStorage(items);
 
