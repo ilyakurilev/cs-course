@@ -1,4 +1,6 @@
 using NUnit.Framework;
+using Reminder.Receiver;
+using Reminder.Storage;
 using Reminder.Tests;
 using System;
 using System.Threading;
@@ -15,19 +17,27 @@ namespace Reminder.Domain.Tests
 				TimerInterval = TimeSpan.FromMilliseconds(20)
 			};
 
-        [Test]
+		public ReminderSender SuccessSender =>
+			new ReminderSender(fail: false);
+
+		public ReminderSender FailSender =>
+			new ReminderSender(fail: true);
+
+		public ReminderReceiver Receiver { get; } =
+			new ReminderReceiver();
+
+		public IReminderStorage Storage =>
+			Create.Storage.Build();
+
+		[Test]
         public void GivenReminderWithPastDate_ShouldRaiseRaised()
         {
             var raised = false;
-            using var scheduler = new ReminderScheduler(
-                Create.Storage
-                    .WithItems(Create.Reminder.AtUtcNow())
-                    .Build(),
-                new ReminderSender(fail: false)
-            );
+            using var scheduler = new ReminderScheduler(Storage, SuccessSender, Receiver);
             scheduler.ReminderSent += (sender, args) => raised = true;
 
             scheduler.Start(DefaultSettings);
+			Receiver.SendMessage(DateTimeOffset.UtcNow, "Message", "ContactId");
             WaitTimers();
 
             Assert.IsTrue(raised);
@@ -37,15 +47,11 @@ namespace Reminder.Domain.Tests
 		public void SenderThrowException_ShouldRaiseRaised()
 		{
 			var raised = false;
-			using var scheduler = new ReminderScheduler(
-				Create.Storage
-					.WithItems(Create.Reminder.AtUtcNow())
-					.Build(),
-				new ReminderSender(fail: true)
-			);
+			using var scheduler = new ReminderScheduler(Storage, FailSender, Receiver);
 			scheduler.ReminderFailed += (sender, args) => raised = true;
 
 			scheduler.Start(DefaultSettings);
+			Receiver.SendMessage(DateTimeOffset.UtcNow, "Message", "ContactId");
 			WaitTimers();
 
 			Assert.IsTrue(raised);

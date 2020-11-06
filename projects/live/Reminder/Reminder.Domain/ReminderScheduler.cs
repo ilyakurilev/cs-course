@@ -3,6 +3,7 @@ using System;
 using System.Threading;
 using Reminder.Sender;
 using Reminder.Sender.Exceptions;
+using Reminder.Receiver;
 
 namespace Reminder.Domain
 {
@@ -14,20 +15,23 @@ namespace Reminder.Domain
 
         private readonly IReminderStorage _storage;
         private readonly IReminderSender _sender;
+        private readonly IReminderReceiver _receiver;
         private Timer _timer;
 
         private bool IsDisposed =>
             _timer == null;
 
-        public ReminderScheduler(IReminderStorage storage, IReminderSender sender)
+        public ReminderScheduler(IReminderStorage storage, IReminderSender sender, IReminderReceiver receiver)
         {
             _storage = storage ?? throw new ArgumentNullException(nameof(storage));
             _sender = sender ?? throw new ArgumentNullException(nameof(sender));
+            _receiver = receiver ?? throw new ArgumentNullException(nameof(receiver));
         }
 
         public void Start(ReminderSchedulerSettings settings)
         {
             _timer = new Timer(OnTimerTick, null, settings.TimerDelay, settings.TimerInterval);
+            _receiver.MessageReceived += OnMessageReceived;
         }
 
         private void OnTimerTick(object state)
@@ -53,6 +57,18 @@ namespace Reminder.Domain
                     OnReminderFailed(reminder);
                 } 
             }
+        }
+
+        private void OnMessageReceived(object sender, MessageReceivedEventArgs args)
+        {
+            var item = new ReminderItem(
+                Guid.NewGuid(),
+                ReminderItemStatus.Created,
+                args.DateTime,
+                args.Message,
+                args.ContactId
+            );
+            _storage.Add(item);
         }
 
         public void OnReminderSent(ReminderItem reminder)
