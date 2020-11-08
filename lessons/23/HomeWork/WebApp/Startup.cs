@@ -4,6 +4,7 @@ using Microsoft.OpenApi.Models;
 using System;
 using WebApp.Models;
 using WebApp.Storage;
+using WebApp.Storage.Memory;
 
 namespace WebApp
 {
@@ -11,13 +12,12 @@ namespace WebApp
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IStorage<City>>(provider => 
-            {
-                var cities = new Storage.Memory.Storage<City>();
-                cities.Add(new City(Guid.NewGuid(), "Moscow", "The capital of Russia", 16_000_000));
-                cities.Add(new City(Guid.NewGuid(), "Tokio", "The capital of Japan", 15_000_000));
-                return cities;
-            });
+            services.AddSingleton<IStorage<City>>(_ => new Storage<City>(new []
+                {
+                    new City(Guid.NewGuid(), "Moscow", "The capital of Russia", 16_000_000),
+                    new City(Guid.NewGuid(), "Tokio", "The capital of Japan", 15_000_000)
+                })
+            );
 
             services
                 .AddControllers()

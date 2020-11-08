@@ -14,6 +14,10 @@ namespace WebApp.Storage.Memory
             _list = new List<T>();
         }
 
+        public Storage(params T[] items)
+        {
+            _list = items.ToList();
+        }
 
         public void Add(T item)
         {
