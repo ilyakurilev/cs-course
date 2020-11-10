@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Linq;
-using WebApp.Models;
+using WebApp.CityStorage;
 
 namespace WebApp.ViewModels
 {
@@ -12,21 +11,18 @@ namespace WebApp.ViewModels
         public int Total_pages { get; }
         public City[] Data { get; }
 
-        public ListCityViewModel(City[] cities, int page, int perPage)
+        public ListCityViewModel(City[] cities, int page, int perPage, int total)
         {
             Page = page;
             Per_page = perPage;
-            Total = cities.Length;
-            Total_pages = (int) Math.Round((double)cities.Length / perPage, MidpointRounding.ToPositiveInfinity);
-            Data = GetDataFromCities(cities);
+            Total = total;
+            Total_pages = CalculateTotalPages(perPage, total);
+            Data = cities;
         }
 
-        private City[] GetDataFromCities(City[] cities)
+        private int CalculateTotalPages(int perPage, int total)
         {
-            var index = (Page - 1) * Per_page;
-            var endIndex = index + Per_page - 1;
-
-            return cities.TakeWhile(_ => index++ < endIndex)?.ToArray();
+            return (int)Math.Round((double)total / perPage, MidpointRounding.ToPositiveInfinity);
         }
     }
 }

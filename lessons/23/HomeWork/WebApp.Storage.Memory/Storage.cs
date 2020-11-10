@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WebApp.Storage;
 
-namespace WebApp.Storage.Memory
+namespace WebApp.CityStorage.Memory
 {
     public class Storage<T> :IStorage<T>
         where T : IIdentified
     {
-        private readonly List<T> _list;
+        protected readonly List<T> _list;
+
+        public int Count => _list.Count;
 
         public Storage()
         {
@@ -29,11 +32,6 @@ namespace WebApp.Storage.Memory
             return _list.FirstOrDefault(_ => _.Id == id);
         }
 
-        public T[] List()
-        {
-            return _list.ToArray();
-        }
-
         public void Remove(T item)
         {
             _list.Remove(item);
@@ -48,6 +46,11 @@ namespace WebApp.Storage.Memory
                 _list.Remove(item);
                 _list.Add(item);
             }
+        }
+
+        public T[] GetItemsOnPage(int page, int perPage)
+        {
+            return _list.Skip((page - 1) * perPage).Take(perPage).ToArray();
         }
     }
 }

@@ -10,7 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WebApp.Storage.Memory\WebApp.Storage.Memory.csproj" />
+    <ProjectReference Include="..\WebApp.CityStorage.Memory\WebApp.CityStorage.Memory.csproj" />
+    <ProjectReference Include="..\WebApp.Storage\WebApp.Storage.csproj" />
   </ItemGroup>
 
 </Project>

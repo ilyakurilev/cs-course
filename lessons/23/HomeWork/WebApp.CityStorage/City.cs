@@ -1,15 +1,10 @@
 ﻿using System;
 using WebApp.Storage;
 
-namespace WebApp.Models
+namespace WebApp.CityStorage
 {
-    public class City : IIdentified
-    {
-		public City()
-		{
-
-		}
-
+	public class City : IIdentified
+	{
 		public City(Guid id, string title, string description, int population)
 		{
 			Id = id;

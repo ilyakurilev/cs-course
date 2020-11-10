@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using WebApp.CityStorage;
 using WebApp.Extensions;
-using WebApp.Models;
-using WebApp.Storage;
 using WebApp.ViewModels;
 
 namespace WebApp.Controllers
@@ -12,19 +10,24 @@ namespace WebApp.Controllers
 	[Route("/api/cities")]
     public class CityController : Controller
     {
-		private readonly IStorage<City> _storage;
+		private readonly ICityStorage _storage;
 		private readonly ILogger<CityController> _logger;
 
-		public CityController(IStorage<City> storage, ILogger<CityController> logger)
+		public CityController(ICityStorage storage, ILogger<CityController> logger)
 		{
 			_storage = storage;
 			_logger = logger;
 		}
 
 		[HttpGet]
-		public IActionResult List([FromQuery] int page = 1)
+		public IActionResult Page([FromQuery] int page = 1, [FromQuery] int perPage = 6)
 		{
-			return Ok(new ListCityViewModel(_storage.List(), page, 6));
+			return Ok(new ListCityViewModel(
+				_storage.GetItemsOnPage(page, perPage),
+				page, 
+				perPage,
+				_storage.Count)
+			);
 		}
 
 		[HttpGet("{id}")]
@@ -50,12 +53,12 @@ namespace WebApp.Controllers
 			}
 
 			var city = new City(
-				Guid.NewGuid(),
+                Guid.NewGuid(),
 				info.Title.Trim().Capitalize(),
 				info.Description.Trim().Capitalize(),
 				info.Population);
 
-			var duplicate = _storage.List().FirstOrDefault(_ => _.Title == city.Title);
+			var duplicate = _storage.FindByTitle(city.Title);
 			if (duplicate != null)
 			{
 				ModelState.AddModelError("Title", "Duplicate value");
