@@ -17,6 +17,6 @@ namespace Reminder.Storage
         /// The reminder <see cref="ReminderItem"/>
         /// </returns>
         ReminderItem Get(Guid id);
-        ReminderItem[] Find(DateTimeOffset dateTime);
+        ReminderItem[] Find(DateTimeOffset dateTime, ReminderItemStatus status);
     }
 }
