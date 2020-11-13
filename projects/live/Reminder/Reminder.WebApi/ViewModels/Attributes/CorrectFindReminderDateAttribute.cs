@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Reminder.WebApi.ViewModels.Attributes
 {
-    public class CorrectDateAttribute : ValidationAttribute
+    public class CorrectFindReminderDateAttribute : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
