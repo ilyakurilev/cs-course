@@ -3,12 +3,14 @@
 namespace Reminder.WebApi.ViewModels
 {
     using Reminder.Storage;
+    using Reminder.WebApi.ViewModels.Attributes;
     using System.ComponentModel.DataAnnotations;
 
     public class CreateReminderViewModel
     {
         public Guid? Id { get; set; }
 
+        [CorrectDate]
         public DateTimeOffset DateTime { get; set; }
 
         public ReminderItemStatus Status { get; set; }

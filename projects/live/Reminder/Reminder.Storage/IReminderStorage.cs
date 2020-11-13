@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Reminder.Storage
 {
@@ -17,6 +15,6 @@ namespace Reminder.Storage
         /// The reminder <see cref="ReminderItem"/>
         /// </returns>
         ReminderItem Get(Guid id);
-        ReminderItem[] Find(DateTimeOffset dateTime, ReminderItemStatus status);
+        ReminderItem[] Find(DateTimeOffset dateTime, ReminderItemStatus status = ReminderItemStatus.Created);
     }
 }

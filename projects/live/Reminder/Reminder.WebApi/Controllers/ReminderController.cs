@@ -46,7 +46,7 @@ namespace Reminder.WebApi.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
 
             var item = new ReminderItem(
