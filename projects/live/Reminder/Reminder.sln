@@ -31,7 +31,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "telegram", "telegram", "{0C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reminder.Receiver.Telegram", "Reminder.Receiver.Telegram\Reminder.Receiver.Telegram.csproj", "{83268CB4-938B-4315-8382-9EE4D6D20DD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reminder.Sender.Telegram", "Reminder.Sender.Telegram\Reminder.Sender.Telegram.csproj", "{5C78F8B9-1D8A-4F99-AE0E-4E1F04C28185}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reminder.Sender.Telegram", "Reminder.Sender.Telegram\Reminder.Sender.Telegram.csproj", "{5C78F8B9-1D8A-4F99-AE0E-4E1F04C28185}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reminder.Storage.WebApi", "Reminder.Storage.WebApi\Reminder.Storage.WebApi.csproj", "{7D724DED-D794-43C1-B5C3-04F2FC15C0D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +89,10 @@ Global
 		{5C78F8B9-1D8A-4F99-AE0E-4E1F04C28185}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C78F8B9-1D8A-4F99-AE0E-4E1F04C28185}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C78F8B9-1D8A-4F99-AE0E-4E1F04C28185}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D724DED-D794-43C1-B5C3-04F2FC15C0D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D724DED-D794-43C1-B5C3-04F2FC15C0D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D724DED-D794-43C1-B5C3-04F2FC15C0D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D724DED-D794-43C1-B5C3-04F2FC15C0D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -98,6 +104,7 @@ Global
 		{6DA7FF5C-EB59-4DA0-9100-B48572463AD5} = {47E4B02A-30BE-4E00-A627-BE2C083535B1}
 		{83268CB4-938B-4315-8382-9EE4D6D20DD8} = {0CF77F51-99F7-42D3-9AFF-107F9E7D45F4}
 		{5C78F8B9-1D8A-4F99-AE0E-4E1F04C28185} = {0CF77F51-99F7-42D3-9AFF-107F9E7D45F4}
+		{7D724DED-D794-43C1-B5C3-04F2FC15C0D2} = {9BDA7BB2-AB94-403B-9CBA-DEFB0E8B4EC5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {35F69240-6C6B-4E6B-B2E6-6F0B18DDC3F2}
