@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Text;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
@@ -7,9 +9,9 @@ namespace Reminder.Storage.WebApi
 {
     using Reminder.Storage.Exceptions;
     using Reminder.Storage.WebApi.Dto;
-    using System.Linq;
+    
 
-    class ReminderStorage : IReminderStorage
+    public class ReminderStorage : IReminderStorage
     {
         private const string ApiPrefix = "/api/reminders";
 
@@ -36,7 +38,7 @@ namespace Reminder.Storage.WebApi
         public void Add(ReminderItem item)
         {
             var json = JsonSerializer.Serialize(item, SerializerOptions);
-            var content = new StringContent(json);
+            var content = new StringContent(json, Encoding.Unicode, "application/json");
             
             var response = _client.PostAsync(ApiPrefix, content)
                 .GetAwaiter()
@@ -52,7 +54,7 @@ namespace Reminder.Storage.WebApi
 
         public ReminderItem[] Find(DateTimeOffset dateTime, ReminderItemStatus status = ReminderItemStatus.Created)
         {
-            var response = _client.GetAsync($"{ApiPrefix}?dateTime={dateTime}&status={status}")
+            var response = _client.GetAsync($"{ApiPrefix}?dateTime={dateTime:u}&status={status}")
                 .GetAwaiter()
                 .GetResult();
 
@@ -104,7 +106,7 @@ namespace Reminder.Storage.WebApi
         public void Update(ReminderItem item)
         {
             var json = JsonSerializer.Serialize(item);
-            var content = new StringContent(json);
+            var content = new StringContent(json, Encoding.Unicode, "application/json");
 
             var response = _client.PutAsync($"{ApiPrefix}/{item.Id:N}", content)
                 .GetAwaiter()

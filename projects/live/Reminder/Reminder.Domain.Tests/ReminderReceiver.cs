@@ -10,7 +10,7 @@ namespace Reminder.Domain.Tests
 
         public void SendMessage(DateTimeOffset dateTime, string message, string contactId)
         {
-            MessageReceived?.Invoke(this, new MessageReceivedEventArgs(dateTime, message, contactId));
+            MessageReceived?.Invoke(this, new MessageReceivedEventArgs(new MessagePayload(message, dateTime), contactId));
         }
 
     }

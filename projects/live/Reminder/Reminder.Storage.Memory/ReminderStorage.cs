@@ -28,7 +28,7 @@ namespace Reminder.Storage.Memory
             }
         }
 
-        public ReminderItem[] Find(DateTimeOffset dateTime, ReminderItemStatus status)
+        public ReminderItem[] Find(DateTimeOffset dateTime, ReminderItemStatus status = ReminderItemStatus.Created)
         {
             return _items.Values.
                 Where(item => item.DateTime <= dateTime && item.Status == status).

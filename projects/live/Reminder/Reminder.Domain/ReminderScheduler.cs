@@ -64,8 +64,8 @@ namespace Reminder.Domain
             var item = new ReminderItem(
                 Guid.NewGuid(),
                 ReminderItemStatus.Created,
-                args.DateTime,
-                args.Message,
+                args.Message.DateTime,
+                args.Message.Text,
                 args.ContactId
             );
             _storage.Add(item);
