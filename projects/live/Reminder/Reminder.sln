@@ -33,9 +33,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reminder.Receiver.Telegram"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reminder.Sender.Telegram", "Reminder.Sender.Telegram\Reminder.Sender.Telegram.csproj", "{5C78F8B9-1D8A-4F99-AE0E-4E1F04C28185}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reminder.Storage.WebApi", "Reminder.Storage.WebApi\Reminder.Storage.WebApi.csproj", "{7D724DED-D794-43C1-B5C3-04F2FC15C0D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reminder.Storage.WebApi", "Reminder.Storage.WebApi\Reminder.Storage.WebApi.csproj", "{7D724DED-D794-43C1-B5C3-04F2FC15C0D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reminder.Storage.WebApi.Tests", "Reminder.Storage.WebApi.Tests\Reminder.Storage.WebApi.Tests.csproj", "{A4E50750-60C7-4CAA-BD6A-74AF1B53123B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reminder.Storage.WebApi.Tests", "Reminder.Storage.WebApi.Tests\Reminder.Storage.WebApi.Tests.csproj", "{A4E50750-60C7-4CAA-BD6A-74AF1B53123B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
