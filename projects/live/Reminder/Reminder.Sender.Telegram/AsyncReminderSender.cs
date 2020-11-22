@@ -1,30 +1,30 @@
 ﻿using System.Net.Http;
+using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
 namespace Reminder.Sender.Telegram
 {
+    using Reminder.Sender;
     using Reminder.Sender.Exceptions;
 
-    public class ReminderSender : IReminderSender
+    public class AsyncReminderSender : IAsyncReminderSender
     {
         private readonly ITelegramBotClient _client;
 
-        public ReminderSender(string token)
+        public AsyncReminderSender(string token)
         {
             _client = new TelegramBotClient(token);
         }
 
-        public void Send(ReminderNotification item)
+        public async Task SendAsync(ReminderNotification notification)
         {
-            var text = $"{item.Message} at {item.DateTime:R}";
-            var chatId = new ChatId(long.Parse(item.ContactId));
+            var text = $"{notification.Message} at {notification.DateTime:R}";
+            var chatId = new ChatId(long.Parse(notification.ContactId));
 
             try
             {
-                _client.SendTextMessageAsync(chatId, text)
-                    .GetAwaiter()
-                    .GetResult();
+                await _client.SendTextMessageAsync(chatId, text);
             }
             catch (HttpRequestException exception)
             {

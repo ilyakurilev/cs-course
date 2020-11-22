@@ -5,12 +5,12 @@ using System.Linq;
 
 namespace Reminder.Storage.Memory.Extensions
 {
-    static class ConcurrentDictionaryExtensions
+    public static class ConcurrentDictionaryExtensions
     {
-        public static ConcurrentDictionary<TKey, TSource> ToConcurrentDictionary<TKey, TSource>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+        public static ConcurrentDictionary<TKey, TValue> ToConcurrentDictionary<TKey, TValue>(this IEnumerable<TValue> source, Func<TValue, TKey> keySelector)
         {
-            var dictionary = source?.ToDictionary(keySelector);
-            return new ConcurrentDictionary<TKey, TSource>(dictionary);
+            var dictionary = source.ToDictionary(keySelector);
+            return new ConcurrentDictionary<TKey, TValue>(dictionary);
         }
     }
 }

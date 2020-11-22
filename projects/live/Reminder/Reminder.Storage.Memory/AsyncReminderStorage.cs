@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 
 namespace Reminder.Storage.Memory
 {
+    using Reminder.Storage.Exceptions;
     using Reminder.Storage.Memory.Extensions;
 
-    public class AsyncReminderStorage : ReminderStorage, IAsyncReminderStorage
+    public class AsyncReminderStorage : IAsyncReminderStorage
     {
         private readonly ConcurrentDictionary<Guid, ReminderItem> _items;
 
@@ -20,24 +22,45 @@ namespace Reminder.Storage.Memory
             _items = items.ToConcurrentDictionary(item => item.Id);
         }
 
-        public async Task AddAsync(ReminderItem item)
+        public Task AddAsync(ReminderItem item)
         {
-            await Task.Run(() => Add(item));
+            if (!_items.TryAdd(item.Id, item))
+            {
+                throw new ReminderItemAlreadyExistsException(item.Id);
+            }
+            return Task.CompletedTask;
         }
 
-        public async Task<ReminderItem[]> FindAsync(DateTimeOffset dateTime, ReminderItemStatus status = ReminderItemStatus.Created)
+        public Task<ReminderItem[]> FindAsync(DateTimeOffset dateTime, ReminderItemStatus status = ReminderItemStatus.Created)
         {
-            return await Task.Run(() => Find(dateTime, status));
+            var result = _items.Values.
+                Where(item => item.DateTime <= dateTime && item.Status == status).
+                OrderByDescending(item => item.DateTime).
+                ToArray();
+
+            return Task.FromResult(result);
         }
 
-        public async Task<ReminderItem> GetAsync(Guid id)
+        public Task<ReminderItem> GetAsync(Guid id)
         {
-            return await Task.Run(() => Get(id));
+            if (!_items.TryGetValue(id, out var item))
+            {
+                throw new ReminderItemNotFoundException(id);
+            }
+
+            return Task.FromResult(item);
         }
 
-        public async Task UpdateAsync(ReminderItem item)
+        public Task UpdateAsync(ReminderItem item)
         {
-            await Task.Run(() => Update(item));
+            if (!_items.ContainsKey(item.Id))
+            {
+                throw new ReminderItemNotFoundException(item.Id);
+            }
+
+            _items[item.Id] = item;
+
+            return Task.CompletedTask;
         }
     }
 }
