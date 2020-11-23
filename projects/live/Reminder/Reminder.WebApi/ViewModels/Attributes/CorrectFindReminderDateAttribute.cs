@@ -7,7 +7,9 @@ namespace Reminder.WebApi.ViewModels.Attributes
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            if (DateTimeOffset.TryParse(value.ToString(), out var dateTime) && dateTime != default)
+            var dateTime = (DateTimeOffset)value;
+
+            if (dateTime != default)
             {
                 return ValidationResult.Success;
             }

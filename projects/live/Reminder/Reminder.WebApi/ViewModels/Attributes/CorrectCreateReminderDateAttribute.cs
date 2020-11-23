@@ -7,17 +7,14 @@ namespace Reminder.WebApi.ViewModels.Attributes
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            if (DateTimeOffset.TryParse(value.ToString(), out var dateTime))
+            var dateTime = (DateTimeOffset)value;
+
+            if (dateTime < DateTimeOffset.UtcNow)
             {
-                var now = DateTimeOffset.UtcNow;
-                if (dateTime < now)
-                {
-                    return new ValidationResult("DateTime must be in future or now");
-                }
-                return ValidationResult.Success;
+                return new ValidationResult("DateTime must be in future or now");
             }
 
-            return new ValidationResult("Invalid DateTime format");
+            return ValidationResult.Success;
         }
     }
 }
