@@ -35,11 +35,11 @@ namespace Reminder.WebApi.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
             var items = _storage.Find(model.DateTime, model.Status);
             return Ok(items);
-        }
+         }
 
         [HttpPost]
         public IActionResult Create([FromBody] CreateReminderViewModel model)

@@ -7,7 +7,7 @@ namespace Reminder.WebApi.ViewModels
 
     public class FindReminderViewModel
     {
-        [CorrectDate(ErrorMessage = "Invalid DateTime format")]
+        [CorrectFindReminderDate(ErrorMessage = "Invalid DateTime format")]
         public DateTimeOffset DateTime { get; set; }
         public ReminderItemStatus Status { get; set; }
     }

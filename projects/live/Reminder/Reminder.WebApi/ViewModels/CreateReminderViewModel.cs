@@ -10,7 +10,7 @@ namespace Reminder.WebApi.ViewModels
     {
         public Guid? Id { get; set; }
 
-        [CorrectDate]
+        [CorrectCreateReminderDate]
         public DateTimeOffset DateTime { get; set; }
 
         public ReminderItemStatus Status { get; set; }
