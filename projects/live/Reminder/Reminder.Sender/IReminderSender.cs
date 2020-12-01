@@ -1,7 +1,9 @@
-﻿namespace Reminder.Sender
+﻿using System.Threading.Tasks;
+
+namespace Reminder.Sender
 {
     public interface IReminderSender
     {
-        void Send(ReminderNotification notification);
+        Task SendAsync(ReminderNotification notification);
     }
 }

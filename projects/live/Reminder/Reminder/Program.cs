@@ -6,6 +6,7 @@ namespace Reminder
     using Reminder.Storage.Memory;
     using Reminder.Sender.Telegram;
     using Reminder.Receiver.Telegram;
+    using System.Threading;
 
     class Program
     {
@@ -13,19 +14,21 @@ namespace Reminder
 
         static void Main(string[] args)
         {
-            var scheduler = new AsyncReminderScheduler(
-                new AsyncReminderStorage(),
-                new AsyncReminderSender(Token),
+            var scheduler = new ReminderScheduler(
+                new ReminderStorage(),
+                new ReminderSender(Token),
                 new ReminderReceiver(Token)
             );
-
+ 
             scheduler.ReminderSent += OnReminderSent;
-            scheduler.Start(new ReminderSchedulerSettings
+
+            var cancellationToken = new CancellationTokenSource().Token;
+            
+            var t = scheduler.StartAsync(new ReminderSchedulerSettings
             {
                 TimerDelay = TimeSpan.Zero,
                 TimerInterval = TimeSpan.FromSeconds(1)
             });
-
 
             Console.WriteLine("Waiting reminders..");
             Console.WriteLine("Press any key to stop");

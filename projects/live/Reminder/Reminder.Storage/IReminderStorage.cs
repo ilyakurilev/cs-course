@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Reminder.Storage
 {
     public interface IReminderStorage
     {
-        void Add(ReminderItem item);
-        void Update(ReminderItem item);
+        Task AddAsync(ReminderItem item);
+        Task UpdateAsync(ReminderItem item);
         /// <summary>
         /// Returns item with matching by id
         /// </summary>
@@ -14,7 +15,7 @@ namespace Reminder.Storage
         /// <returns>
         /// The reminder <see cref="ReminderItem"/>
         /// </returns>
-        ReminderItem Get(Guid id);
-        ReminderItem[] Find(DateTimeOffset dateTime, ReminderItemStatus status = ReminderItemStatus.Created);
+        Task<ReminderItem> GetAsync(Guid id);
+        Task<ReminderItem[]> FindAsync(DateTimeOffset dateTime, ReminderItemStatus status = ReminderItemStatus.Created);
     }
 }

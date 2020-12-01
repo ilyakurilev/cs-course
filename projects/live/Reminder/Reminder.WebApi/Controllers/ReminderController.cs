@@ -9,9 +9,9 @@ namespace Reminder.WebApi.Controllers
     [Route("/api/reminders")]
     public class ReminderController : Controller
     {
-        private readonly IAsyncReminderStorage _storage;
+        private readonly IReminderStorage _storage;
 
-        public ReminderController(IAsyncReminderStorage storage)
+        public ReminderController(IReminderStorage storage)
         {
             _storage = storage ?? throw new ArgumentNullException(nameof(storage));
         }

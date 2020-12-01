@@ -4,12 +4,12 @@ using System.Text;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Reminder.Storage.WebApi
 {
     using Reminder.Storage.Exceptions;
     using Reminder.Storage.WebApi.Dto;
-    
 
     public class ReminderStorage : IReminderStorage
     {
@@ -35,14 +35,12 @@ namespace Reminder.Storage.WebApi
             _client = client;
         }
 
-        public void Add(ReminderItem item)
+        public async Task AddAsync(ReminderItem item)
         {
             var json = JsonSerializer.Serialize(item, SerializerOptions);
             var content = new StringContent(json, Encoding.Unicode, "application/json");
-            
-            var response = _client.PostAsync(ApiPrefix, content)
-                .GetAwaiter()
-                .GetResult();
+
+            var response = await _client.PostAsync(ApiPrefix, content);
             
             if (response.StatusCode == HttpStatusCode.Conflict)
             {
@@ -52,17 +50,13 @@ namespace Reminder.Storage.WebApi
             response.EnsureSuccessStatusCode();
         }
 
-        public ReminderItem[] Find(DateTimeOffset dateTime, ReminderItemStatus status = ReminderItemStatus.Created)
+        public async Task<ReminderItem[]> FindAsync(DateTimeOffset dateTime, ReminderItemStatus status = ReminderItemStatus.Created)
         {
-            var response = _client.GetAsync($"{ApiPrefix}?dateTime={dateTime:u}&status={status}")
-                .GetAwaiter()
-                .GetResult();
+            var response = await _client.GetAsync($"{ApiPrefix}?dateTime={dateTime:u}&status={status}");
 
             response.EnsureSuccessStatusCode();
 
-            var json = response.Content.ReadAsStringAsync()
-                .GetAwaiter()
-                .GetResult();
+            var json = await response.Content.ReadAsStringAsync();
 
             var dtoItems = JsonSerializer.Deserialize<ReminderItemDto[]>(json, SerializerOptions);
 
@@ -77,11 +71,9 @@ namespace Reminder.Storage.WebApi
                 .ToArray();
         }
 
-        public ReminderItem Get(Guid id)
+        public async Task<ReminderItem> GetAsync(Guid id)
         {
-            var response = _client.GetAsync($"{ApiPrefix}/{id:N}")
-                .GetAwaiter()
-                .GetResult();
+            var response = await _client.GetAsync($"{ApiPrefix}/{id:N}");
 
             if (response.StatusCode == HttpStatusCode.NotFound)
             {
@@ -90,9 +82,8 @@ namespace Reminder.Storage.WebApi
 
             response.EnsureSuccessStatusCode();
 
-            var json = response.Content.ReadAsStringAsync()
-                .GetAwaiter()
-                .GetResult();
+            var json = await response.Content.ReadAsStringAsync();
+
             var dto = JsonSerializer.Deserialize<ReminderItemDto>(json, SerializerOptions);
 
             return new ReminderItem(
@@ -103,14 +94,12 @@ namespace Reminder.Storage.WebApi
                 dto.ContactId);
         }
 
-        public void Update(ReminderItem item)
+        public async Task UpdateAsync(ReminderItem item)
         {
             var json = JsonSerializer.Serialize(item);
             var content = new StringContent(json, Encoding.Unicode, "application/json");
 
-            var response = _client.PutAsync($"{ApiPrefix}/{item.Id:N}", content)
-                .GetAwaiter()
-                .GetResult();
+            var response = await _client.PutAsync($"{ApiPrefix}/{item.Id:N}", content);
 
             if (response.StatusCode == HttpStatusCode.BadRequest)
             {
