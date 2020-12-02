@@ -8,8 +8,8 @@ namespace Reminder.Tests
         private Guid _id = Guid.NewGuid();
         private ReminderItemStatus _status = ReminderItemStatus.Created;
         private DateTimeOffset _dateTime = DateTimeOffset.UtcNow;
-        private string _message = "";
-        private string _contactId = "";
+        private string _message = "Message";
+        private string _contactId = "ContactId";
 
         public ReminderItemBuilder AtUtcNow()
         {

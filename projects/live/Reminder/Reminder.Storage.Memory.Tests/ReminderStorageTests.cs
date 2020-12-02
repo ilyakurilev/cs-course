@@ -1,5 +1,4 @@
-﻿using NuGet.Frameworks;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Reminder.Storage.Exceptions;
 using Reminder.Tests;
 using System;

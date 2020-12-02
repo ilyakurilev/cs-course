@@ -1,49 +1,34 @@
 ﻿using System;
-using System.Threading;
-using Reminder.Domain;
-using Reminder.Storage;
-using Reminder.Storage.Memory;
 
 namespace Reminder
 {
+    using Reminder.Domain;
+    using Reminder.Storage.Memory;
+    using Reminder.Sender.Telegram;
+    using Reminder.Receiver.Telegram;
+    using System.Threading;
+
     class Program
     {
+        private const string Token = "";
+
         static void Main(string[] args)
         {
-            var scheduler = new ReminderScheduler(new ReminderStorage(
-                    new ReminderItem(
-                        Guid.NewGuid(),
-                        ReminderItemStatus.Created,
-                        DateTimeOffset.UtcNow.AddMinutes(1),
-                        "Message 1",
-                        "ContactId 1"
-                        ),
-                    new ReminderItem(
-                        Guid.NewGuid(),
-                        ReminderItemStatus.Created,
-                        DateTimeOffset.UtcNow.AddSeconds(10),
-                        "Message 2",
-                        "ContactId 2"
-                        ),
-                    new ReminderItem(
-                        Guid.NewGuid(),
-                        ReminderItemStatus.Created,
-                        DateTimeOffset.UtcNow,
-                        "Message 3",
-                        "ContactId 3"
-                        )
-                ),
-                null,
-                null
+            var scheduler = new ReminderScheduler(
+                new ReminderStorage(),
+                new ReminderSender(Token),
+                new ReminderReceiver(Token)
             );
-
+ 
             scheduler.ReminderSent += OnReminderSent;
-            scheduler.Start(new ReminderSchedulerSettings
+
+            var cancellationToken = new CancellationTokenSource().Token;
+            
+            var t = scheduler.StartAsync(new ReminderSchedulerSettings
             {
                 TimerDelay = TimeSpan.Zero,
                 TimerInterval = TimeSpan.FromSeconds(1)
             });
-
 
             Console.WriteLine("Waiting reminders..");
             Console.WriteLine("Press any key to stop");
@@ -57,7 +42,6 @@ namespace Reminder
                 $"{args.Reminder.DateTime:F} sent received with " +
                 $"message {args.Reminder.Message}"
             );
-            Thread.Sleep(5 * 1000);
         }
     }
 }
