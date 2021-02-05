@@ -32,13 +32,20 @@ namespace Reminder.Storage.Memory
             return Task.CompletedTask;
         }
 
-        public Task<ReminderItem[]> FindAsync(DateTimeOffset dateTime, ReminderItemStatus status = ReminderItemStatus.Created)
+        public Task<ReminderItem[]> FindAsync(ReminderItemFilter filter)
         {
-            var result = _items.Values.
-                Where(item => item.DateTime <= dateTime && item.Status == status).
-                OrderByDescending(item => item.DateTime).
-                ToArray();
-            return Task.FromResult(result);
+            var result = _items.Values.AsEnumerable();
+            if (filter.DateTime.HasValue)
+            {
+                result = result.Where(item => item.DateTime <= filter.DateTime);
+            }
+            if (filter.Status.HasValue)
+            {
+                result = result.Where(item => item.Status == filter.Status);
+            }
+            result = result.OrderByDescending(item => item.DateTime);
+
+            return Task.FromResult(result.ToArray());
         }
 
         public Task<ReminderItem> GetAsync(Guid id)

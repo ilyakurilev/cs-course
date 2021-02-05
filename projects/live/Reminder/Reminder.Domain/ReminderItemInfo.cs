@@ -17,7 +17,7 @@ namespace Reminder.Domain
             DateTime = reminder.DateTime;
             Status = reminder.Status;
             Message = reminder.Message;
-            ContactId = reminder.ContactId;
+            ContactId = reminder.ChatId;
         }
     }
 }

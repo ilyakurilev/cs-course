@@ -1,6 +1,7 @@
 ﻿using Reminder.Sender;
 using Reminder.Sender.Exceptions;
 using System;
+using System.Threading.Tasks;
 
 namespace Reminder.Domain.Tests
 {
@@ -13,12 +14,13 @@ namespace Reminder.Domain.Tests
 			_fail = fail;
         }
 
-		public void Send(ReminderNotification item)
+		public Task SendAsync(ReminderNotification item)
 		{
 			if (_fail)
 			{
 				throw new ReminderSenderException(null);
 			}
+			return Task.CompletedTask;
 		}
 	}
 }

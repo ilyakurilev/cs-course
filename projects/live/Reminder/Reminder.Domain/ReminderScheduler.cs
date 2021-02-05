@@ -39,8 +39,7 @@ namespace Reminder.Domain
 
         private async Task SendScheduledRemindersAsync()
         {
-            var dateTime = DateTimeOffset.UtcNow;
-            var reminders = await _storage.FindAsync(dateTime);
+            var reminders = await _storage.FindAsync(ReminderItemFilter.CreatedAtNow());
 
             foreach (var reminder in reminders)
             {
@@ -50,7 +49,7 @@ namespace Reminder.Domain
                     await _sender.SendAsync(new ReminderNotification(
                         reminder.DateTime,
                         reminder.Message,
-                        reminder.ContactId
+                        reminder.ChatId
                         )
                     );
                     OnReminderSent(reminder);

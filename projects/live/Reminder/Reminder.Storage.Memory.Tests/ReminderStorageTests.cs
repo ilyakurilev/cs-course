@@ -2,6 +2,7 @@
 using Reminder.Storage.Exceptions;
 using Reminder.Tests;
 using System;
+using System.Threading.Tasks;
 
 namespace Reminder.Storage.Memory.Tests
 {
@@ -14,15 +15,15 @@ namespace Reminder.Storage.Memory.Tests
 			var storage = Create.Storage.Build();
 			
 
-			var exception = Assert.Catch<ReminderItemNotFoundException>(() =>
-				storage.Get(itemId)
+			var exception = Assert.CatchAsync<ReminderItemNotFoundException>(() =>
+				storage.GetAsync(itemId)
 			);
 			Assert.AreEqual(itemId, exception.Id);
 		}
 
 
 		[Test]
-		public void Get_GivenExistingItem_ShouldReturnIt()
+		public async Task Get_GivenExistingItem_ShouldReturnIt()
 		{
 			// Arrange
 			var itemId = Guid.NewGuid();
@@ -31,14 +32,14 @@ namespace Reminder.Storage.Memory.Tests
 			
 
 			// Act
-			var result = storage.Get(itemId);
+			var result = await storage.GetAsync(itemId);
 
 			// Assert
 			Assert.AreEqual(itemId, result.Id);
 		}
 
 		[Test]
-		public void Add_GivenNotExistingId_ShouldGetByIdAfterAdd()
+		public async Task Add_GivenNotExistingId_ShouldGetByIdAfterAdd()
 		{
 			// Arrange
 			var itemId = Guid.NewGuid();
@@ -46,8 +47,8 @@ namespace Reminder.Storage.Memory.Tests
 			var storage = Create.Storage.Build();
 
 			// Act
-			storage.Add(item);
-			var result = storage.Get(item.Id);
+			await storage.AddAsync(item);
+			var result = await storage.GetAsync(item.Id);
 
 			// Assert
 			Assert.AreEqual(item.Id, result.Id);
@@ -62,8 +63,8 @@ namespace Reminder.Storage.Memory.Tests
 			var storage = Create.Storage.WithItems(item).Build();
 
 			// Act
-			var exception = Assert.Catch<ReminderItemAlreadyExistsException>(() =>
-				storage.Add(item)
+			var exception = Assert.CatchAsync<ReminderItemAlreadyExistsException>(() =>
+				storage.AddAsync(item)
 			);
 
 			// Assert
@@ -78,14 +79,14 @@ namespace Reminder.Storage.Memory.Tests
 			var storage = Create.Storage.Build();
 			
 
-			var exception = Assert.Catch<ReminderItemNotFoundException>(() =>
-				storage.Update(item)
+			var exception = Assert.CatchAsync<ReminderItemNotFoundException>(() =>
+				storage.UpdateAsync(item)
 			);
 			Assert.AreEqual(item.Id, exception.Id);
 		}
 
 		[Test]
-		public void Update_GivenExistingItem_ShouldReturnUpdatedValues()
+		public async Task Update_GivenExistingItem_ShouldReturnUpdatedValues()
 		{
 			var itemId = Guid.NewGuid();
 			var item = Create.Reminder.
@@ -101,16 +102,16 @@ namespace Reminder.Storage.Memory.Tests
 				Build();
 
 
-			storage.Update(updatedItem);
-			var result = storage.Get(item.Id);
+			await storage.UpdateAsync(updatedItem);
+			var result = await storage.GetAsync(item.Id);
 
 
 			Assert.AreEqual(updatedItem.Message, result.Message);
-			Assert.AreEqual(updatedItem.ContactId, result.ContactId);
+			Assert.AreEqual(updatedItem.ChatId, result.ChatId);
 		}
 
 		[Test]
-		public void Find_GivenRemindersInFuture_ShouldReturnEmptyCollection()
+		public async Task Find_GivenRemindersInFuture_ShouldReturnEmptyCollection()
 		{
 			var datetime = DateTimeOffset.UtcNow;
 			var storage = Create.Storage.
@@ -119,13 +120,14 @@ namespace Reminder.Storage.Memory.Tests
 				Create.Reminder.InFuture()).
 				Build();
 
-			var result = storage.Find(datetime);
+
+			var result = await storage.FindAsync(ReminderItemFilter.CreatedAt(datetime));
 
 			CollectionAssert.IsEmpty(result);
 		}
 
 		[Test]
-		public void Find_GivenRemindersInPastOrEqual_ShouldReturnNotEmptyCollection()
+		public async Task Find_GivenRemindersInPastOrEqual_ShouldReturnNotEmptyCollection()
 		{
 			var datetime = DateTimeOffset.UtcNow;
 			var storage = Create.Storage.
@@ -134,7 +136,7 @@ namespace Reminder.Storage.Memory.Tests
 				Create.Reminder.InPast()).
 				Build();
 
-			var result = storage.Find(datetime);
+			var result = await storage.FindAsync(ReminderItemFilter.CreatedAt(datetime));
 
 			CollectionAssert.IsNotEmpty(result);
 		}
