@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Scripts\CreateProcedureAddReminderItem.sql" />
+    <None Remove="Scripts\CreateProcedureUpdateReminderItem.sql" />
+    <None Remove="Scripts\CreateTableReminderContacts.sql" />
+    <None Remove="Scripts\CreateTableReminderItems.sql" />
+    <None Remove="Scripts\CreateTableReminderStatuses.sql" />
+    <None Remove="Scripts\InsertReminderStatuses.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\CreateProcedureAddReminderItem.sql" />
+    <EmbeddedResource Include="Scripts\CreateProcedureUpdateReminderItem.sql" />
+    <EmbeddedResource Include="Scripts\CreateTableReminderContacts.sql" />
+    <EmbeddedResource Include="Scripts\CreateTableReminderItems.sql" />
+    <EmbeddedResource Include="Scripts\CreateTableReminderStatuses.sql" />
+    <EmbeddedResource Include="Scripts\InsertReminderStatuses.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.2" />
+    <PackageReference Include="System.Linq.Async" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Reminder.Storage\Reminder.Storage.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -50,9 +50,9 @@ namespace Reminder.Storage.WebApi
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task<ReminderItem[]> FindAsync(DateTimeOffset dateTime, ReminderItemStatus status = ReminderItemStatus.Created)
+        public async Task<ReminderItem[]> FindAsync(ReminderItemFilter filter)
         {
-            var response = await _client.GetAsync($"{ApiPrefix}?dateTime={dateTime:u}&status={status}");
+            var response = await _client.GetAsync($"{ApiPrefix}?dateTime={filter.DateTime:u}&status={filter.Status}");
 
             response.EnsureSuccessStatusCode();
 

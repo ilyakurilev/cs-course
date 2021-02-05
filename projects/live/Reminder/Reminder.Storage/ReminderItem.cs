@@ -20,19 +20,19 @@ namespace Reminder.Storage
         /// </summary>
         public DateTimeOffset DateTime { get; private set; }
         public string Message { get; private set; }
-        public string ContactId { get; private set; }
+        public string ChatId { get; private set; }
 
         public ReminderItem(Guid id,
             ReminderItemStatus status,
             DateTimeOffset dateTime,
             string message,
-            string contactId)
+            string chatId)
         {
             Id = id;
             Status = status;
             DateTime = dateTime;
             Message = message;
-            ContactId = contactId;
+            ChatId = chatId;
         }
 
         public void MarkSent() =>
@@ -56,7 +56,7 @@ namespace Reminder.Storage
         }
 
         public override string ToString() =>
-            $"Reminder (id: {Id}, status: {Status}) at {DateTime:O} to {ContactId}";
+            $"Reminder (id: {Id}, status: {Status}) at {DateTime:O} to {ChatId}";
 
     }
 }

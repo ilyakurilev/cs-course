@@ -16,6 +16,6 @@ namespace Reminder.Storage
         /// The reminder <see cref="ReminderItem"/>
         /// </returns>
         Task<ReminderItem> GetAsync(Guid id);
-        Task<ReminderItem[]> FindAsync(DateTimeOffset dateTime, ReminderItemStatus status = ReminderItemStatus.Created);
+        Task<ReminderItem[]> FindAsync(ReminderItemFilter filter);
     }
 }

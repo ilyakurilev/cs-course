@@ -30,7 +30,8 @@ namespace Reminder.WebApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var items = await _storage.FindAsync(model.DateTime, model.Status);
+
+            var items = await _storage.FindAsync(new ReminderItemFilter(model.DateTime, model.Status));
             return Ok(items);
          }
 
@@ -67,7 +68,7 @@ namespace Reminder.WebApi.Controllers
                     model.Status,
                     item.DateTime,
                     model.Message,
-                    item.ContactId);
+                    item.ChatId);
                 await _storage.UpdateAsync(updatedItem);
                 return Ok(updatedItem);
         }

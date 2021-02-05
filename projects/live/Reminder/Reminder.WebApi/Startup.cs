@@ -14,11 +14,11 @@ namespace Reminder.WebApi
 
     public class Startup
     {
-        public void ConfigureServices(IServiceCollection services)
+        /*public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
             services.AddSingleton<IReminderStorage, ReminderStorage>();
-        }
+        }*/
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
