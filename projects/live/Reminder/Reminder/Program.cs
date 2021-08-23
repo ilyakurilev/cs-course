@@ -28,7 +28,7 @@ namespace Reminder
             {
                 TimerDelay = TimeSpan.Zero,
                 TimerInterval = TimeSpan.FromSeconds(1)
-            });
+            }, cancellationToken);
 
             Console.WriteLine("Waiting reminders..");
             Console.WriteLine("Press any key to stop");

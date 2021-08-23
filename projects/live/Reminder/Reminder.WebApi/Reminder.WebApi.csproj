@@ -5,8 +5,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Reminder.Storage.Memory\Reminder.Storage.Memory.csproj" />
-    <ProjectReference Include="..\Reminder.Storage\Reminder.Storage.csproj" />
+    <ProjectReference Include="..\Reminder.Domain\Reminder.Domain.csproj" />
+    <ProjectReference Include="..\Reminder.Receiver.Telegram\Reminder.Receiver.Telegram.csproj" />
+    <ProjectReference Include="..\Reminder.Sender.Telegram\Reminder.Sender.Telegram.csproj" />
+    <ProjectReference Include="..\Reminder.Storage.SqlServer.Ef\Reminder.Storage.SqlServer.Ef.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.Development.json">
+      <DependentUpon>appsettings.json</DependentUpon>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.18">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

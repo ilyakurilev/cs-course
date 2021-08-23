@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Reminder.Domain
 {
-    using Reminder.Storage;
-    using Reminder.Sender;
-    using Reminder.Receiver;
-    using Reminder.Sender.Exceptions;
+    using Storage;
+    using Sender;
+    using Receiver;
+    using Sender.Exceptions;
 
     public class ReminderScheduler
     {
@@ -24,16 +25,16 @@ namespace Reminder.Domain
             _receiver = receiver ?? throw new ArgumentNullException(nameof(receiver));
         }
 
-        public async Task StartAsync(ReminderSchedulerSettings settings)
+        public async Task StartAsync(ReminderSchedulerSettings settings, CancellationToken cancellationToken)
         {
             _receiver.MessageReceived += OnMessageReceived;
 
-            await Task.Delay(settings.TimerDelay);
+            await Task.Delay(settings.TimerDelay, cancellationToken);
 
-            while (true)
+            while (!cancellationToken.IsCancellationRequested)
             {
-                await Task.Delay(settings.TimerInterval);
                 await SendScheduledRemindersAsync();
+                await Task.Delay(settings.TimerInterval, cancellationToken);
             }
         }
 
@@ -44,6 +45,7 @@ namespace Reminder.Domain
             foreach (var reminder in reminders)
             {
                 reminder.MarkReady();
+                await _storage.UpdateAsync(reminder);
                 try
                 {
                     await _sender.SendAsync(new ReminderNotification(
@@ -52,11 +54,11 @@ namespace Reminder.Domain
                         reminder.ChatId
                         )
                     );
-                    OnReminderSent(reminder);
+                    await OnReminderSentAsync(reminder);
                 }
                 catch (ReminderSenderException)
                 {
-                    OnReminderFailed(reminder);
+                    await OnReminderFailedAsync(reminder);
                 }
             }
         }
@@ -73,15 +75,17 @@ namespace Reminder.Domain
             _storage.AddAsync(item);
         }
 
-        private void OnReminderSent(ReminderItem reminder)
+        private async Task OnReminderSentAsync(ReminderItem reminder)
         {
             reminder.MarkSent();
+            await _storage.UpdateAsync(reminder);
             ReminderSent?.Invoke(this, new ReminderEventArgs(reminder));
         }
 
-        private void OnReminderFailed(ReminderItem reminder)
+        private async Task OnReminderFailedAsync(ReminderItem reminder)
         {
             reminder.MarkFailed();
+            await _storage.UpdateAsync(reminder);
             ReminderFailed?.Invoke(this, new ReminderEventArgs(reminder));
         }
     }
